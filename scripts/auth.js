@@ -1,17 +1,40 @@
-//get dada from data base
-db.collection("guides")
-  .get()
-  .then(snapshot => {
-    setUpGuides(snapshot.docs);
-  });
-
 //listen for auth status changes
 auth.onAuthStateChanged(user => {
+  console.log(user);
   if (user) {
-    console.log("user logged in: ", user);
+    //get dada from data base
+    db.collection("guides")
+      .onSnapshot(snapshot => {
+        setUpGuides(snapshot.docs);
+        setupUI(user);
+      })
+      .catch(err => {
+        console.log(err.message);
+      });
   } else {
-    console.log("user logged out");
+    setupUI();
+    setUpGuides([]);
   }
+});
+
+//create new guide
+const createForm = document.querySelector("#create-form");
+createForm.addEventListener("submit", e => {
+  e.preventDefault();
+  db.collection("guides")
+    .add({
+      title: createForm["title"].value,
+      content: createForm["content"].value
+    })
+    .then(() => {
+      //close the model and reset form
+      const modal = document.querySelector("#modal-create");
+      M.Modal.getInstance(modal).close();
+      createForm.reset();
+    })
+    .catch(err => {
+      console.log(err.message);
+    });
 });
 
 //signup user
