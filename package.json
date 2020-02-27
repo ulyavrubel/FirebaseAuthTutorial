@@ -1,0 +1,24 @@
+{
+  "name": "firebaseauthtutorial",
+  "version": "1.0.0",
+  "description": "https://www.youtube.com/watch?v=d0RK2bpRVgo",
+  "main": "index.js",
+  "dependencies": {
+    "firebase": "^7.9.1",
+    "firebase-tools": "^7.14.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ulyavrubel/FirebaseAuthTutorial.git"
+  },
+  "author": "ulyana  sichkar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ulyavrubel/FirebaseAuthTutorial/issues"
+  },
+  "homepage": "https://github.com/ulyavrubel/FirebaseAuthTutorial#readme"
+}

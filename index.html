@@ -29,7 +29,7 @@
           <li class="logged-in" style="display: none;">
             <a href="#" class="grey-text" id="logout">Logout</a>
           </li>
-          <li class="logged-in" style="display: none;">
+          <li class="admin" style="display: none;">
             <a
               href="#"
               class="grey-text modal-trigger"
@@ -57,6 +57,15 @@
       </div>
     </nav>
 
+    <!-- ADMIN ACTIONS -->
+    <form
+      class="center-align admin-actions admin"
+      style="margin: 40px auto; max-width: 300px; display: none;"
+    >
+      <input type="email" placeholder="User email" id="admin-email" required />
+      <button class="btn-small yellow darken-2 z-depth-0">Make admin</button>
+    </form>
+
     <!-- SIGN UP MODAL -->
     <div id="modal-signup" class="modal">
       <div class="modal-content">
@@ -70,6 +79,10 @@
           <div class="input-field">
             <input type="password" id="signup-password" required />
             <label for="signup-password">Choose password</label>
+          </div>
+          <div class="input-field">
+            <input type="text" id="signup-bio" required />
+            <label for="signup-bio">One line bio</label>
           </div>
           <button class="btn yellow darken-2 z-depth-0">Sign up</button>
         </form>
@@ -136,6 +149,7 @@
     <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-functions.js"></script>
     <!-- TODO: Add SDKs for Firebase products that you want to use
      https://firebase.google.com/docs/web/setup#available-libraries -->
     <script src="https://www.gstatic.com/firebasejs/7.9.1/firebase-analytics.js"></script>
@@ -159,6 +173,7 @@
       //make auth and firestore references
       const auth = firebase.auth();
       const db = firebase.firestore();
+      const functions = firebase.functions();
     </script>
 
     <!-- Compiled and minified JavaScript -->

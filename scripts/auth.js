@@ -1,16 +1,32 @@
+//add admin cloud function
+const adminForm = document.querySelector(".admin-actions");
+adminForm.addEventListener("submit", e => {
+  e.preventDefault();
+  const adminEmail = document.querySelector("#admin-email").value;
+  const addAdminRole = functions.httpsCallable("addAdminRole");
+  addAdminRole({ email: adminEmail }).then(result => {
+    console.log(result);
+  });
+});
+
 //listen for auth status changes
 auth.onAuthStateChanged(user => {
   console.log(user);
   if (user) {
-    //get dada from data base
-    db.collection("guides")
-      .onSnapshot(snapshot => {
+    //is a user admin?
+    user.getIdTokenResult().then(idTokenResult => {
+      user.admin = idTokenResult.claims.admin;
+      setupUI(user);
+    });
+    //get data from database
+    db.collection("guides").onSnapshot(
+      snapshot => {
         setUpGuides(snapshot.docs);
-        setupUI(user);
-      })
-      .catch(err => {
+      },
+      err => {
         console.log(err.message);
-      });
+      }
+    );
   } else {
     setupUI();
     setUpGuides([]);
@@ -47,14 +63,24 @@ signupForm.addEventListener("submit", e => {
   const password = signupForm["signup-password"].value;
 
   //sign up the user
-  auth.createUserWithEmailAndPassword(email, password).then(cred => {
-    console.log(cred.user);
-    const modal = document.querySelector("#modal-signup");
-    //after getting user info close it
-    M.Modal.getInstance(modal).close();
-    //clear form
-    signupForm.reset();
-  });
+  auth
+    .createUserWithEmailAndPassword(email, password)
+    .then(cred => {
+      //create collection users and inside document with user uid create bio property
+      return db
+        .collection("users")
+        .doc(cred.user.uid)
+        .set({
+          bio: signupForm["signup-bio"].value
+        });
+    })
+    .then(() => {
+      const modal = document.querySelector("#modal-signup");
+      //after getting user info close it
+      M.Modal.getInstance(modal).close();
+      //clear form
+      signupForm.reset();
+    });
 });
 
 //logout user
